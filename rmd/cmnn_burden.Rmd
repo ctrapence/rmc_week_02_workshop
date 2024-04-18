@@ -6,13 +6,27 @@ pacman::p_load(tidyverse, knitr, here)
 
 # Import the communicable diseases data
 data_cmnn <- read_csv(here("data", "burden-of-disease-cmnn.csv"))
+
 ```
 
 ## Table of Estimates for CMNN Burden Over Time
 
 ```{r}
 # Here render a table for the DALY burden over time for the three countries 
+
+DALY3 <- as_tibble(data_cmnn)
+DALY3 <- DALY3 %>% filter(Entity == "Australasia" | Entity == "Malawi" | Entity == "Cameroon")
+
+DALY3 <- DALY3 %>% rename(
+  Country = Entity,
+  DALY = `DALYs (Disability-Adjusted Life Years) - Communicable, maternal, neonatal, and nutritional diseases - Sex: Both - Age: Age-standardized (Rate)`
+)
+
 # You should pivot the data to show each country in a separate column.
+
+DALY_wide <- DALY3 %>% pivot_wider(names_from = Country,
+                                   values_from = Year)
+
 # Use kable() from the knitr package to render the table.
 ```
 
@@ -20,10 +34,18 @@ data_cmnn <- read_csv(here("data", "burden-of-disease-cmnn.csv"))
 
 ```{r}
 # Here, plot a line graph showing the trend of DALY burden for the chosen countries over time. You can use ggplot2 to create this plot. Each country's line should be a different color.
+
+ggplot(DALY3, aes(x = Year, y = DALY, color = Country)) +
+  geom_line() +
+  ggtitle("Daily adjusted life years from communicable diseases over time") +
+  xlab("Time") +
+  ylab("Daily adjusted life years")
+
 ```
 
 ## Summary of CMNN Burden Findings
 
 Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences.
 
+This data demonstrates that in Malawi and Cameroon there was an initial increase in DALY in the late 1990s and early 2000s, possibly due to the HIV/AIDs epidemic. This has reduced since the 2010s. The DALYs lost in Australia from communicable disease has generally been low.
 
