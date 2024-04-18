@@ -1,16 +1,25 @@
-# Non-Communicable Disease Burden (NCD)
+---
+title: "Non-Communicable Disease Burden (NCD)"
+subtitle: "Trends: Austrat,Malawi & Camerron"
+author: "Clement Trapence"
+output: github_document
+---
+
 
 ```{r echo=FALSE}
 # Load necessary packages
 pacman::p_load(tidyverse, knitr, here)
+```
 
-# Import the non-communicable diseases data
+
+```{r echo=FALSE ,message=F,warning=F}
+
 data_ncd <- read_csv(here("data", "burden-of-disease-ncd.csv"))
 ```
 
 ## Table of Estimates for NCD Burden Over Time
 
-```{r}
+```{r echo=FALSE}
 
 data_ncd_clean <- data_ncd %>% 
   filter(Entity %in% c("Cameroon","Australia","Malawi")) %>% 
@@ -44,6 +53,9 @@ This indicates that the disease burden has not changed dramatically over the yea
 
 Malawi (blue line): There's an increase in DALYs from around 1990 until around the year 2000, after which there is a steady decline. The initial increase could have been due to a worsening of health conditions or an outbreak of disease. The subsequent decline suggests an improvement in health conditions or effectiveness of health interventions.
 
+```{r}
+
+```
 
 
 
