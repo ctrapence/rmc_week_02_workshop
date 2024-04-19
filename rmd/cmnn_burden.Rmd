@@ -1,3 +1,16 @@
+---
+
+title: "Communicable, Maternal, Neonatal, and Nutritional Disease Burden (CMNN)"
+author: "Alyssa Pradhan"
+output: github_document
+
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
 # Communicable, Maternal, Neonatal, and Nutritional Disease Burden (CMNN)
 
 ```{r}
@@ -5,11 +18,13 @@
 pacman::p_load(tidyverse, knitr, here)
 
 # Import the communicable diseases data
-data_cmnn <- read_csv(here("data", "burden-of-disease-cmnn.csv"))
+data_cmnn <- read_csv(here("data", "burden-of-disease-cmnn.csv"), show_col_types = FALSE)
 
 ```
 
 ## Table of Estimates for CMNN Burden Over Time
+
+DALY by year for each of Australasia, Cameroon and Malawi
 
 ```{r}
 # Here render a table for the DALY burden over time for the three countries 
@@ -22,12 +37,18 @@ DALY3 <- DALY3 %>% rename(
   DALY = `DALYs (Disability-Adjusted Life Years) - Communicable, maternal, neonatal, and nutritional diseases - Sex: Both - Age: Age-standardized (Rate)`
 )
 
+DALY3 <- DALY3 %>% select(-Code)
+
 # You should pivot the data to show each country in a separate column.
 
-DALY_wide <- DALY3 %>% pivot_wider(names_from = Country,
-                                   values_from = Year)
+DALY_wide <- DALY3 %>% pivot_wider(id_cols = Year,
+                                   names_from = Country,
+                                   values_from = DALY)
 
 # Use kable() from the knitr package to render the table.
+
+knitr::kable(DALY_wide)
+
 ```
 
 ## Plot Showing Trends in CMNN Burden Over Time
@@ -44,8 +65,6 @@ ggplot(DALY3, aes(x = Year, y = DALY, color = Country)) +
 ```
 
 ## Summary of CMNN Burden Findings
-
-Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences.
 
 This data demonstrates that in Malawi and Cameroon there was an initial increase in DALY in the late 1990s and early 2000s, possibly due to the HIV/AIDs epidemic. This has reduced since the 2010s. The DALYs lost in Australia from communicable disease has generally been low.
 
